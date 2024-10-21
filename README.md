@@ -81,7 +81,7 @@ M.I.N.I 是一种综合性的诊断评估工具，包含 A 到 P 共 16 个独�
 
 权重⚖️分配：['抑郁症': 0.4, '失眠': 0.2, '低落': 0.1, '食欲': 0.1, '运动抑制': 0.1, '女': 0.05, '24': 0.05]
 
-![Key Words Weight.png](picture%2FKey%20Words%20Weight.png)
+![Weight Distribution.png](picture%2FWeight%20Distribution.png)
 
 ### MySQL 数据库信息检索
 
