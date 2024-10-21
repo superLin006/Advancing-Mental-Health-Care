@@ -104,6 +104,7 @@ M.I.N.I 是一种综合性的诊断评估工具，包含 A 到 P 共 16 个独�
 方法一： 数据清洗🧹与提取，识别并筛选不同治疗方案、药物💊和建议。通过新模板生成包含核心治疗方案的个性化医疗建议。代码文件：NLP_generate.py
 
 方法二： 调用大语言模型（LLM）API，如百度的千帆大模型“ERNIE-speed-128k”，生成个性化医疗建议。代码文件：LLM_generate.py
+
 效果图如下：
 
 ![Generating Effect.png](picture%2FGenerating%20Effect.png)
