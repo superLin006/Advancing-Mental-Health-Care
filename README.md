@@ -87,13 +87,33 @@ M.I.N.I 是一种综合性的诊断评估工具，包含 A 到 P 共 16 个独�
 
 利用关键词-权重⚖️模糊匹配算法在 MySQL 数据库🗄️中直接检索🔍，选取综合评分最高的前 50 条数据。
 
+检索结果：
+
+![Key Word Result.png](picture%2FKey%20Word%20Result.png)
+
 ### 文本对语义相似度计算
 
-使用各个模型（BERT、ALBERT、RoBERTa、XLNet）分别计算模板问题与问答对答案部分的语义相关度📊。模板问题如下：
+取15组数据，使用各个模型（BERT、ALBERT、RoBERTa、XLNet，FT_RoBERTa）分别计算模板问题与问答对的语义相关度📊。
+
+各个模型不同指标下的计算结果：
+
+![Model Result Table.png](picture%2FModel%20Result%20Table.png)
+
+各个模型不同指标可视化结果：
+
+![Model Result Chat.png](picture%2FModel%20Result%20Chat.png)
+
+其中一组数据的模板问题如下（案例）：
 
 "[性别女，24]，患有[抑郁症]，伴有[失眠，低落，食欲不振，运动抑制]等症状，应如何治疗？用什么药？有什么建议？"
 
-模型会从候选数据中选取排名前 10 的最相关数据。
+候选数据“问答对”来之上两步，关键词-权重模糊匹配算法在MySQL数据库检索出的结果。使用ROBERTa模型计算的结果如下：
+
+![Model Result.png](picture%2FModel%20Result.png)
+
+模型会从得出的候选数据中选取排名前 5 的最相关数据，组成最终的数据。
+
+
 
 ### 医疗建议生成
 
