@@ -1,22 +1,25 @@
 import requests
 import json
+import os
 
 
 def get_access_token():
-    """
-    使用 API Key，Secret Key 获取access_token，替换下列示例中的应用API Key、应用Secret Key
-    """
-
-    url = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=hKg5lqIu01DH3enpsbxRKChB&client_secret=BR0JlkCh2hwGyvWVGEpbQRHQlJPsc1fy"
-
-    payload = json.dumps("")
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-    return response.json().get("access_token")
+    """Get a token using credentials supplied by the local environment."""
+    api_key = os.environ.get("BAIDU_API_KEY")
+    secret_key = os.environ.get("BAIDU_SECRET_KEY")
+    if not api_key or not secret_key:
+        raise RuntimeError("Set BAIDU_API_KEY and BAIDU_SECRET_KEY before running this script")
+    response = requests.post(
+        "https://aip.baidubce.com/oauth/2.0/token",
+        data={"grant_type": "client_credentials", "client_id": api_key,
+              "client_secret": secret_key},
+        timeout=30,
+    )
+    response.raise_for_status()
+    token = response.json().get("access_token")
+    if not token:
+        raise RuntimeError("Baidu did not return an access token")
+    return token
 
 
 def main():

@@ -73,6 +73,8 @@ def calculate_score(pair, keywords):
 
 # 分批从数据库获取问答对
 def get_pairs_from_db(config, offset, batch_size):
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**config)
         if connection.is_connected():
@@ -82,9 +84,11 @@ def get_pairs_from_db(config, offset, batch_size):
             return cursor.fetchall()
     except Error as e:
         print("Error while connecting to MySQL", e)
+        raise
     finally:
-        if connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        if connection is not None:
             connection.close()
 
 # 生成问题模板

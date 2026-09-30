@@ -16,8 +16,8 @@ conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 # 修改数据库和表的字符集为utf8mb4
-cursor.execute("ALTER DATABASE `medical_QA` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;")
-cursor.execute("ALTER TABLE qa_pairs CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")
+database_name = config["database"].replace("`", "``")
+cursor.execute(f"ALTER DATABASE `{database_name}` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;")
 
 # 创建数据表
 create_table_sql = """
@@ -28,12 +28,19 @@ CREATE TABLE IF NOT EXISTS qa_pairs (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 """
 cursor.execute(create_table_sql)
+cursor.execute("ALTER TABLE qa_pairs CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")
 
 # 为question_text和answer_text列创建全文索引
 create_index_sql = """
 ALTER TABLE qa_pairs ADD FULLTEXT INDEX idx_qa_text (question_text, answer_text);
 """
-cursor.execute(create_index_sql)
+cursor.execute(
+    "SELECT 1 FROM information_schema.statistics "
+    "WHERE table_schema = %s AND table_name = %s AND index_name = %s LIMIT 1",
+    (config["database"], "qa_pairs", "idx_qa_text"),
+)
+if cursor.fetchone() is None:
+    cursor.execute(create_index_sql)
 
 # 从JSONL文件读取数据并插入到数据库
 file_path = "D:/soft/treatmentPlan_generation/data.jsonl"
